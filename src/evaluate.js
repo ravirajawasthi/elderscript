@@ -8,9 +8,14 @@ const getIdentifier = (name) => {
 };
 
 const evaluate = (node) => {
-  if (node.value) return node.value;
+  if (node.type === 'VariableDeclaration') return define(node);
+  else if (node.value) return node.value;
   else if (node.type === 'CallExpression') return apply(node);
   else if (node.type === 'Identifier') return getIdentifier(node.name);
+};
+
+const define = (node) => {
+  environment[node.identifier.name] = node.assignment.value;
 };
 
 const apply = (node) => {
